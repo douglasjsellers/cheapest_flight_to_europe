@@ -76,7 +76,7 @@ else
 
     flight_search.flight_search( true )
     cost, url, whole_elements = *flight_search.cheapest_flight
-    puts "#{cost}, #{current_location[0]}, #{current_location[1]},#{current_location[2]}, #{url}"
+    puts "#{cost}, #{current_location[0]}, #{current_location[1]},#{current_location[2]}, http://api.kayak.com#{url}"
   end
   
   
