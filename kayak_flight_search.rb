@@ -76,9 +76,6 @@ class KayakFlightSearch
     Net::HTTP.start(@hostname, @port) do |http|
       response = http.get(url)
       body = response.body
-      File.open("ksearchid.xml", "w") do |f|
-        f.puts(body)
-      end
       xml = REXML::Document.new(body)
       @searchid = xml.elements['//searchid']
       if @searchid 
@@ -113,9 +110,6 @@ class KayakFlightSearch
       end
       response = http.get(url)
       body = response.body
-      File.open("ksearchbody.xml", "w") do |f|
-        f.puts(body)
-      end
       more = handle_results( body)
       if more != 'true'
         # save the body, so we can test without doin
