@@ -155,40 +155,44 @@ begin
     puts "USAGE:"
     puts "ksearch f ORIGIN_AIPORT DESTINATION_AIRPORT DEPART_DATE [RETURN_DATE]"
     puts "ksearch h \"city, RC, CC\" CHECKIN_DATE CHECKOUT_DATE"
-  end
-
-  searchtype = ARGV[0]
-
-  sid = getsession(@@token);
-  if !sid 
-    puts "bad token, sorry"
-    exit 1
-  end
-  puts "session id = #{sid}"
-  if (searchtype == 'f') 
-    searchid = start_flight_search(sid, 'n', ARGV[1], ARGV[2], ARGV[3], ARGV[4], 1)
-  elsif (searchtype == 'h') 
-    searchid = start_hotel_search(sid, ARGV[1], ARGV[2], ARGV[3], 1)
   else
-    puts "unknown search type #{searchtype}; should be 'f' or 'h'"
-  end
-  if !searchid
-    puts "search failed. see error document."
-    exit 1
-  end
-  puts "search id = #{searchid}"
-  sleep(2)
+    
 
-  # now poll results (only gets "top 10" each time)
-  more = poll_results(searchtype, sid, searchid, nil)
-  while more == 'true' do
+
+    searchtype = ARGV[0]
+
+    sid = getsession(@@token);
+    if !sid 
+      puts "bad token, sorry"
+      exit 1
+    end
+    puts "session id = #{sid}"
+    if (searchtype == 'f') 
+      searchid = start_flight_search(sid, 'n', ARGV[1], ARGV[2], ARGV[3], ARGV[4], 1)
+    elsif (searchtype == 'h') 
+      searchid = start_hotel_search(sid, ARGV[1], ARGV[2], ARGV[3], 1)
+    else
+      puts "unknown search type #{searchtype}; should be 'f' or 'h'"
+    end
+    
+    if !searchid
+      puts "search failed. see error document."
+      exit 1
+    end
+    
+    puts "search id = #{searchid}"
+    sleep(2)
+
+    # now poll results (only gets "top 10" each time)
     more = poll_results(searchtype, sid, searchid, nil)
-    puts "more to come: #{more} #{@@lastcount} so far"
-    sleep(3)
-  end
+    while more == 'true' do
+      more = poll_results(searchtype, sid, searchid, nil)
+      puts "more to come: #{more} #{@@lastcount} so far"
+      sleep(3)
+    end
   
-  #one final call to get all results (instead of only 10)
-  poll_results(searchtype, sid, searchid, @@lastcount)
-
-  puts "Results stored in ksearchresults.xml"
+    #one final call to get all results (instead of only 10)
+    poll_results(searchtype, sid, searchid, @@lastcount)
+    puts "Results stored in ksearchresults.xml"
+  end    
 end
