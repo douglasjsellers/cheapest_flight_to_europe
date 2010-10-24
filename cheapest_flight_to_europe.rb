@@ -2,13 +2,15 @@
 require 'kayak_flight_search'
 
 
-if( ARGV.length < 3 )
-  puts "ruby cheapest_flight_to_europe.rb START_DATE END_DATE NUM_TRAVELERS"
+if( ARGV.length < 5 )
+  puts "ruby cheapest_flight_to_europe.rb KAYAK_API_KEY START_AIRPORT_CODE START_DATE END_DATE NUM_TRAVELERS"
 else
 
-  start_date = ARGV[0]
-  end_date = ARGV[1]
-  num_travelers = ARGV[2]
+  kayak_api_key = ARGV[0]
+  start_airport_code = ARGV[1]
+  start_date = ARGV[2]
+  end_date = ARGV[3]
+  num_travelers = ARGV[4]
 
   airport_codes = [
                    [ "Vienna", "Austria", "VIE" ],
@@ -64,9 +66,9 @@ else
            ]
 
   airport_codes.each do |current_location|
-    flight_search = KayakFlightSearch.new( 'XlTLRouSZWMUuk0NlXRjMw',
+    flight_search = KayakFlightSearch.new( kayak_api_key,
                                            'n',
-                                           'LAX',
+                                           start_airport_code,
                                            current_location.last,
                                            start_date,
                                            end_date,
@@ -74,7 +76,7 @@ else
 
     flight_search.flight_search( true )
     cost, url, whole_elements = *flight_search.cheapest_flight
-    puts "#{cost}, #{current_location[1]}, #{current_location[2]}, #{url}"
+    puts "#{cost}, #{current_location[0]}, #{current_location[1]},#{current_location[2]}, #{url}"
   end
   
   

@@ -56,7 +56,7 @@ class KayakFlightSearch
 
     # now poll results (only gets "top 10" each time)
     more = poll_results( nil )
-    if( load_all )
+    if( load_all || @lastcount < 1)
       while more == 'true' do
         more = poll_results( nil)
         sleep(3)
