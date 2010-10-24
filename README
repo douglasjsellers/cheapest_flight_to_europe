@@ -5,13 +5,13 @@ In order to use this, you will need a kayak developer api key which can be obtai
 The usage is as follows:
 ruby cheapest_flight_to_europe.rb <DEVELOPER_KEY> AIRPORT_CODE DEPART_DATE RETURN_DATE NUMBER_OF_PASSENGERS
 
-For Example:
+*For example:*
 ruby cheapest_flight_to_europe.rb <YOUR_KEY> LAX 12/18/2010 1/1/2011 1
 
 
 This will return CSV separated list of values of the format:
 
-Price is USD, City, Country, Airport Code, Url To Purchase Tickts
+Price in USD, City, Country, Airport Code, Url To Purchase Tickts
 
 Here are some example results:
 1321, Vienna, Austria,VIE, http://api.kayak.com/book/flight?code=433837366.P6PqYg.0.F.VAYAMA,VAYAMA.0.e35de7584afe520a443536a4943aaccc&amp;_sid_=24-
