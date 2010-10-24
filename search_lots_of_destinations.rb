@@ -26,7 +26,7 @@ def start_flight_search(sid,
                         dep_date,
                         ret_date,
                         travelers)
-  url = "/s/apisearch?basicmode=true&oneway=n&origin=#{origin}&destination=#{destination}&destcode=&depart_date=#{dep_date}&depart_time=a&return_date=#{ret_date}&return_time=a&travelers=#{travelers}&cabin=f&action=doflights&apimode=1&_sid_=#{sid}"
+  url = "/s/apisearch?basicmode=true&oneway=n&origin=#{origin}&destination=#{destination}&destcode=&depart_date=#{dep_date}&depart_time=a&return_date=#{ret_date}&return_time=a&travelers=#{travelers}&cabin=e&action=doflights&apimode=1&_sid_=#{sid}"
   return start_search(url)
 end
 
@@ -123,8 +123,7 @@ def handle_results(searchtype, body)
       xml.elements.each("/searchresult/trips/trip") do |e|
         e.each_element("price") do |t|
           # pull the prices out of the trip XML element
-          #puts t.text
-          #puts t.attribute("url")
+          puts "#{t.text},#{t.attribute("url")}"
         end
         e.each_element("legs") do |legs|
           legs.each_element("leg") do |l|
