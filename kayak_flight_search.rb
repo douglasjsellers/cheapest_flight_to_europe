@@ -1,3 +1,7 @@
+require 'net/http'
+require 'rexml/document' 
+require 'uri'
+
 class KayakFlightSearch
 
   def initialize( token,
@@ -17,6 +21,12 @@ class KayakFlightSearch
     @ret_date = ret_date
     @travelers = travelers
     @lastcount = nil
+    @results = []
+  end
+
+  def cheapest_flight
+    sorted_results = @results.sort { |a,b| a.first <=> b.first }
+    sorted_results.first
   end
   
   def getsession
@@ -37,6 +47,8 @@ class KayakFlightSearch
     
     start_search(url)
     wait_for_results
+
+    self
   end
 
   def wait_for_results
@@ -132,7 +144,7 @@ class KayakFlightSearch
       xml.elements.each("/searchresult/trips/trip") do |e|
         e.each_element("price") do |t|
           # pull the prices out of the trip XML element
-          puts "#{t.text},#{t.attribute("url")}"
+          @results << [t.text.to_i, t.attribute("url"), e]
         end
         e.each_element("legs") do |legs|
           legs.each_element("leg") do |l|
