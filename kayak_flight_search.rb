@@ -1,15 +1,26 @@
 class KayakFlightSearch
 
-  def initialize( token )
+  def initialize( token,
+                  oneway,
+                  origin,
+                  destination,
+                  dep_date,
+                  ret_date,
+                  travelers)
     @hostname = 'api.kayak.com'
     @port = 80
     @token = token
+    @oneway = oneway
+    @origin = origin
+    @destination = destination
+    @dep_date = dep_date
+    @ret_date = ret_date
+    @travelers = travelers
     @lastcount = nil
   end
   
   def getsession
     if @sid == nil
-      puts "http://#{@hostname}/k/ident/apisession?token=#{@token}"      
       Net::HTTP.start(@hostname, @port) do |http|
         response = http.get("/k/ident/apisession?token=#{@token}")
         body = response.body
@@ -21,41 +32,50 @@ class KayakFlightSearch
     return @sid
   end
 
-  def start_flight_search( oneway,
-                           origin,
-                           destination,
-                           dep_date,
-                           ret_date,
-                           travelers)
-    url = "/s/apisearch?basicmode=true&oneway=n&origin=#{origin}&destination=#{destination}&destcode=&depart_date=#{dep_date}&depart_time=a&return_date=#{ret_date}&return_time=a&travelers=#{travelers}&cabin=#{get_cabin}&action=doflights&apimode=1&_sid_=#{getsession}"
-    return start_search(url)
+  def flight_search
+    url = "/s/apisearch?basicmode=true&oneway=n&origin=#{@origin}&destination=#{@destination}&destcode=&depart_date=#{@dep_date}&depart_time=a&return_date=#{@ret_date}&return_time=a&travelers=#{@travelers}&cabin=#{get_cabin}&action=doflights&apimode=1&_sid_=#{getsession}"
+    
+    start_search(url)
+    wait_for_results
   end
 
+  def wait_for_results
+    sleep(2)
+
+    # now poll results (only gets "top 10" each time)
+    more = poll_results( nil )
+    while more == 'true' do
+      more = poll_results( nil)
+      sleep(3)
+    end
+
+    # one last one to get the final results
+    poll_results
+  end
+  
   def get_cabin
     "e"
   end
 
   def start_search(url)
-    searchid = nil
+    @searchid = nil
     Net::HTTP.start(@hostname, @port) do |http|
       response = http.get(url)
-      puts "http://#{@hostname}#{url}"
       body = response.body
-      puts body
       File.open("ksearchid.xml", "w") do |f|
         f.puts(body)
       end
       xml = REXML::Document.new(body)
-      searchid = xml.elements['//searchid']
-      if searchid 
-        searchid = searchid.text
+      @searchid = xml.elements['//searchid']
+      if @searchid 
+        @searchid = @searchid.text
       else
         puts "search error:"
         puts body
         return nil
       end
     end
-    return searchid
+    @searchid
   end
 
   @results = []
@@ -69,8 +89,8 @@ class KayakFlightSearch
     return handle_results(xmltext)
   end
 
-  def poll_results( searchid, count = @lastcount )
-    url = "/s/apibasic/flight?searchid=#{searchid}&apimode=1&_sid_=#{getsession}"
+  def poll_results( count = @lastcount )
+    url = "/s/apibasic/flight?searchid=#{@searchid}&apimode=1&_sid_=#{getsession}"
     
     more = nil
     Net::HTTP.start(@hostname, @port) do |http|
@@ -78,7 +98,6 @@ class KayakFlightSearch
         url += "&c=#{count}"
       end
       response = http.get(url)
-      puts "http://#{@hostname}#{url}"
       body = response.body
       File.open("ksearchbody.xml", "w") do |f|
         f.puts(body)
