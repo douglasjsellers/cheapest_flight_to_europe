@@ -10,7 +10,7 @@ flight_search = KayakFlightSearch.new( 'XlTLRouSZWMUuk0NlXRjMw',
                                        '1/1/2011',
                                        1 )
 
-flight_search.flight_search
+flight_search.flight_search( false )
 
 cost, url, whole_elements = *flight_search.cheapest_flight
 

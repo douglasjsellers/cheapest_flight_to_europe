@@ -42,27 +42,29 @@ class KayakFlightSearch
     return @sid
   end
 
-  def flight_search
+  def flight_search( load_all = true )
     url = "/s/apisearch?basicmode=true&oneway=n&origin=#{@origin}&destination=#{@destination}&destcode=&depart_date=#{@dep_date}&depart_time=a&return_date=#{@ret_date}&return_time=a&travelers=#{@travelers}&cabin=#{get_cabin}&action=doflights&apimode=1&_sid_=#{getsession}"
     
     start_search(url)
-    wait_for_results
+    wait_for_results( load_all )
 
     self
   end
 
-  def wait_for_results
+  def wait_for_results( load_all = true)
     sleep(2)
 
     # now poll results (only gets "top 10" each time)
     more = poll_results( nil )
-    while more == 'true' do
-      more = poll_results( nil)
-      sleep(3)
-    end
+    if( load_all )
+      while more == 'true' do
+        more = poll_results( nil)
+        sleep(3)
+      end
 
-    # one last one to get the final results
-    poll_results
+      # one last one to get the final results
+      poll_results
+    end    
   end
   
   def get_cabin
