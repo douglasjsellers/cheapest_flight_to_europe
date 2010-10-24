@@ -57,13 +57,11 @@ else
                    [ "Turin", "Italy", "TRN" ],
                    [ "Gothenburg", "Sweden", "GOT"],
                    [ "Basel", "Switzerland", "BSL"],
-                   [ "Malaga", "Spain", "AGP" ]
+                   [ "Malaga", "Spain", "AGP" ],
+                   [ "Athens", "Greece", "ATH" ],
+                   [ "Larnaca", "Cyprus", "LNA" ],
+                   [ "Riga", "Latvia", "RIX" ]
                   ]
-
-  extras = [
-            [ "Larnaca", "Cyprus", "LNA" ],
-            [ "Riga", "Latvia", "RIX" ],
-           ]
 
   airport_codes.each do |current_location|
     flight_search = KayakFlightSearch.new( kayak_api_key,
