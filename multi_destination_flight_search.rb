@@ -21,6 +21,7 @@ class MultiDestinationFlightSearch
 
   def find_flights
     @results = []
+    @pids = []
     @destinations.each do |current_location|
       flight_search = KayakFlightSearch.new( @kayak_api_key,
                                              @oneway,
@@ -30,11 +31,21 @@ class MultiDestinationFlightSearch
                                              @end_date,
                                              @num_travelers.to_i )
       
-      flight_search.flight_search( true )
+      pid = fork do
+        puts "Forking to pid: #{pid}"
+        flight_search.flight_search( true )
+      end
+      @pids << [ pid, flight_search ]
+    end
+
+    @pids.each do |pid_array|
+      pid, flight_search = *pid_array
+      Process.waitpid(pid)
       cost, url, whole_elements = *flight_search.cheapest_flight
       puts "Processed #{current_location[0]}, #{current_location[1]} (#{current_location[2]})"
       @results << [ cost, current_location, "http://api.kayak.com#{url}"]
     end
+    
     @results
   end
 
