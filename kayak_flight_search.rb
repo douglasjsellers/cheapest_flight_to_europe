@@ -22,6 +22,7 @@ class KayakFlightSearch
     @travelers = travelers
     @lastcount = nil
     @results = []
+    @resulting_xml = ""
   end
 
   def cheapest_flight
@@ -95,9 +96,7 @@ class KayakFlightSearch
   # for debugging only, load results
   # from a file.
   def poll_results_file
-    f = File.new("ksearchresults.xml", "r")
-    xmltext = f.read
-    return handle_results(xmltext)
+    return handle_results(@resulting_xml)
   end
 
   def poll_results( count = @lastcount )
@@ -112,11 +111,7 @@ class KayakFlightSearch
       body = response.body
       more = handle_results( body)
       if more != 'true'
-        # save the body, so we can test without doin
-        # an actual search 
-        File.open("ksearchresults.xml", "w") do |f|
-          f.puts(body)
-        end
+        @resulting_xml << body
       end
     end
     return more

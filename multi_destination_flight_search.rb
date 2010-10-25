@@ -29,7 +29,7 @@ class MultiDestinationFlightSearch
                                              @start_date,
                                              @end_date,
                                              @num_travelers.to_i )
-
+      
       flight_search.flight_search( true )
       cost, url, whole_elements = *flight_search.cheapest_flight
       puts "Processed #{current_location[0]}, #{current_location[1]} (#{current_location[2]})"
