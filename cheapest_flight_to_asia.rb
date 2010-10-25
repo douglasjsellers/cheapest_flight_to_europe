@@ -1,5 +1,5 @@
 #! /usr/bin/ruby
-require 'kayak_flight_search'
+require 'multi_destination_flight_search'
 
 
 if( ARGV.length < 5 )
@@ -11,76 +11,61 @@ else
   start_date = ARGV[2]
   end_date = ARGV[3]
   num_travelers = ARGV[4]
+  flight_search = MultiDestinationFlightSearch.new( kayak_api_key, start_airport_code, start_date, end_date, num_travelers )
 
-  airport_codes = [
-                   [ "Bagkok", "Thailand", "BKK" ],
-                   [ "Beijing", "China", "PEK" ],
-                   [ "Mumbai", "India", "BOM" ],
-                   [ "Colombo", "Sri Lanka", "CMB" ],
-                   [ "Hanoi", "Vietnam", "HAN" ],
-                   [ "Ho Chi Minh City", "Vietnam", "SGN" ],
-                   [ "Da Nang", "Vietnam", "DAD" ],
-                   [ "Hiroshima", "Japan", "HIW" ],
-                   [ "Hong Kong", "China", "HKG" ],
-                   [ "Jakarta", "Indonesia", "CGK" ],
-                   [ "Manila", "Philippines", "MNL" ],
-                   [ "Nagoya", "Japan", "NGO" ],
-                   [ "Osaka", "Japan", "KIX" ],
-                   [ "Sapporo", "Japan", "CTS" ],
-                   [ "Seoul", "Korea", "SEL" ],
-                   [ "Singapore", "Singapore", "SIN" ],
-                   [ "Taipei", "Taiwan", "TPE" ],
-                   [ "Tokyo", "Japan", "NRT" ],
-                   [ "Xian Xianyang", "China", "XIY" ],
-                   [ "Dhaka", "Bangladesh", "DAC" ],
-                   [ "Shanghai", "China", "PVG" ],
-                   [ "Guangzhou", "China", "CAN" ],
-                   [ "Central", "Japan", "NGO" ],
-                   [ "Kuala Lumpur", "Malaysia", "KUL" ],
-                   [ "Penang", "Malaysia", "PEN" ],
-                   [ "Islamabad", "Pakistan", "ISB" ],
-                   [ "Karachi", "Pakistan", "KHI" ],
-                   [ "Jinnah", "Pakistan", "JIA" ],
-                   [ "Seoul", "Korea", "GMP" ],
-                   [ "Bangkok", "Thailand", "DMK" ],
-                   [ "Phuket", "Thailand", "HKT" ],
-                   [ "Amritsar", "India", "ATQ" ],
-                   [ "New Delhi", "India", "DEL" ],
-                   [ "Kolkata", "India", "CCU" ],
-                   [ "Hyderabad", "India", "HYD" ],
-                   [ "Goa", "India", "GOI" ],
-                   [ "Madras", "India", "MAA" ],
-                   [ "Bangalore", "India", "BLR" ], 
-                   [ "Trivandrum", "India", "TRV" ],
-                   [ "Kozhikode", "India", "CCJ" ],
-                   [ "Kochi", "India", "COK" ],
-                   [ "Wattay", "Laos", "VTE" ],
-                   [ "Luang Prabang", "Laos", "LPQ"],
-                   [ "Pakse", "Laos", "PKZ" ],
-                   [ "Phnom Penh", "Cambodia", "PNH" ],
-                   [ "Reap", "Cambodia", "REP" ],
-                   [ "Paro", "Butan", "PBH" ],
-                   [ "Kathmandu", "Nepal", "KTM" ],
-                   [ "Manila", "Philippines", "MNL" ],
-                   [ "Lapu-Lapu", "Philippines", "CEB" ],
-                   [ "Davao", "Philippines", "DVO" ]
-                   
-                  ]
-
-
-  airport_codes.each do |current_location|
-    flight_search = KayakFlightSearch.new( kayak_api_key,
-                                           'n',
-                                           start_airport_code,
-                                           current_location.last,
-                                           start_date,
-                                           end_date,
-                                           num_travelers.to_i )
-
-    flight_search.flight_search( true )
-    cost, url, whole_elements = *flight_search.cheapest_flight
-    puts "#{cost}, #{current_location[0]}, #{current_location[1]},#{current_location[2]}, http://api.kayak.com#{url}"
-  end
+  flight_search.add_destination( "BKK","Bagkok","Thailand")
+  flight_search.add_destination( "PEK","Beijing","China")
+  flight_search.add_destination( "BOM","Mumbai","India")
+  flight_search.add_destination( "CMB","Colombo","Sri Lanka" )
+  flight_search.add_destination( "HAN","Hanoi","Vietnam")
+  flight_search.add_destination( "SGN", "Ho Chi Minh City", "Vietnam" )
+  flight_search.add_destination( "DAD", "Da Nang", "Vietnam")
+  flight_search.add_destination( "HIW","Hiroshima","Japan")
+  flight_search.add_destination( "HGK", "Hong Kong", "China")
+  flight_search.add_destination( "CGK","Jakarta","Indonesia")
+  flight_search.add_destination( "MNL","Manila","Philippines")
+  flight_search.add_destination( "NGO","Nagoya","Japan")
+  flight_search.add_destination( "KIX","Osaka","Japan")
+  flight_search.add_destination( "CTS","Sapporo","Japan")
+  flight_search.add_destination( "SEL","Seoul","Korea")
+  flight_search.add_destination( "SIN","Singapore","Singapore")
+  flight_search.add_destination( "TPE","Taipei","Taiwan")
+  flight_search.add_destination( "NRT","Tokyo","Japan")
+  flight_search.add_destination( "XIY", "Xian Xianyang", "China")
+  flight_search.add_destination( "DAC","Dhaka","Bangladesh")
+  flight_search.add_destination( "PVG","Shanghai","China")
+  flight_search.add_destination( "CAN","Guangzhou","China")
+  flight_search.add_destination( "NGO","Central","Japan")
+  flight_search.add_destination( "KUL","Kuala Lumpur", "Malaysia")
+  flight_search.add_destination( "PEN","Penang","Malaysia")
+  flight_search.add_destination( "ISB","Islamabad","Pakistan")
+  flight_search.add_destination( "KHI","Karachi","Pakistan")
+  flight_search.add_destination( "JIA","Jinnah","Pakistan")
+  flight_search.add_destination( "GMP","Seoul","Korea")
+  flight_search.add_destination( "DMK","Bangkok","Thailand")
+  flight_search.add_destination( "HKT","Phuket","Thailand")
+  flight_search.add_destination( "ATQ","Amritsar","India")
+  flight_search.add_destination( "DEL", "New Delhi", "India")
+  flight_search.add_destination( "CCU","Kolkata","India")
+  flight_search.add_destination( "HYD","Hyderabad","India")
+  flight_search.add_destination( "GOI","Goa","India")
+  flight_search.add_destination( "MAA","Madras","India")
+  flight_search.add_destination( "BLR","Bangalore","India")
+  flight_search.add_destination( "TRV","Trivandrum","India")
+  flight_search.add_destination( "CCJ","Kozhikode","India")
+  flight_search.add_destination( "COK","Kochi","India")
+  flight_search.add_destination( "VTE","Wattay","Laos")
+  flight_search.add_destination( "LPQ", "Luang Prabang", "Laos")
+  flight_search.add_destination( "PKZ","Pakse","Laos")
+  flight_search.add_destination( "PNH", "Phnom Penh","Cambodia")
+  flight_search.add_destination( "REP","Reap","Cambodia")
+  flight_search.add_destination( "PBH","Paro","Butan")
+  flight_search.add_destination( "KTM","Kathmandu","Nepal")
+  flight_search.add_destination( "MNL","Manila","Philippines")
+  flight_search.add_destination( "CEB","Lapu-Lapu","Philippines")
+  flight_search.add_destination( "DVO","Davao","Philippines")
+  
+  flight_search.print_cheapest_flights
   
   
 end

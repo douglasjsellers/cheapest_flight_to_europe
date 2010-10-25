@@ -1,5 +1,5 @@
 #! /usr/bin/ruby
-require 'kayak_flight_search'
+require 'multi_destination_flight_search'
 
 
 if( ARGV.length < 5 )
@@ -12,33 +12,19 @@ else
   end_date = ARGV[3]
   num_travelers = ARGV[4]
 
-  airport_codes = [
-                   [ "Auckland", "New Zealand", "AKL" ],
-                   [ "Christchurh", "New Zealand", "CHC" ],
-                   [ "Wellington", "New Zealand", "WLG" ],
-                   [ "Adelaide", "Australia", "ADL" ],
-                   [ "Brisbane", "Australia", "BNE" ],
-                   [ "Cairns", "Australia", "CNS" ],
-                   [ "Darwin", "Australia", "DRW" ],
-                   [ "Melbourne", "Australia", "MEL" ],
-                   [ "Perth", "Australia", "PER" ],
-                   [ "Sydney", "Australia", "SYD" ]
-                  ]
+  flight_search = MultiDestinationFlightSearch.new( kayak_api_key, start_airport_code, start_date, end_date, num_travelers )
 
-
-  airport_codes.each do |current_location|
-    flight_search = KayakFlightSearch.new( kayak_api_key,
-                                           'n',
-                                           start_airport_code,
-                                           current_location.last,
-                                           start_date,
-                                           end_date,
-                                           num_travelers.to_i )
-
-    flight_search.flight_search( true )
-    cost, url, whole_elements = *flight_search.cheapest_flight
-    puts "#{cost}, #{current_location[0]}, #{current_location[1]},#{current_location[2]}, http://api.kayak.com#{url}"
-  end
+  flight_search.add_destination( "AKL","Auckland","New Zealand")
+  flight_search.add_destination( "CHC","Christchurh","New Zealand")
+  flight_search.add_destination( "WLG","Wellington","New Zealand")
+  flight_search.add_destination( "ADL","Adelaide","Australia" )
+  flight_search.add_destination( "BNE","Brisbane","Australia" )
+  flight_search.add_destination( "CNS","Cairns","Australia" )
+  flight_search.add_destination( "DRW","Darwin","Australia" )
+  flight_search.add_destination( "MEL","Melbourne","Australia" )
+  flight_search.add_destination( "PER","Perth","Australia" )
+  flight_search.add_destination( "SYD","Sydney","Australia" )
   
+  flight_search.print_cheapest_flights   
   
 end
