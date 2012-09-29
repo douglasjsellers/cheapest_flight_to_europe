@@ -1,18 +1,16 @@
 #! /usr/bin/ruby
-require 'multi_destination_flight_search'
+require_relative 'google_flight_multi_destination_flight_search'
 
 
-if( ARGV.length < 5 )
-  puts "ruby cheapest_flight_to_europe.rb KAYAK_API_KEY START_AIRPORT_CODE START_DATE END_DATE NUM_TRAVELERS"
+if( ARGV.length < 3 )
+  puts "ruby cheapest_flight_to_europe.rb START_AIRPORT_CODE START_DATE END_DATE"
 else
 
-  kayak_api_key = ARGV[0]
-  start_airport_code = ARGV[1]
-  start_date = ARGV[2]
-  end_date = ARGV[3]
-  num_travelers = ARGV[4]
+  start_airport_code = ARGV[0]
+  start_date = ARGV[1]
+  end_date = ARGV[2]
 
-  flight_search = MultiDestinationFlightSearch.new( kayak_api_key, start_airport_code, start_date, end_date, num_travelers )
+  flight_search = MultiDestinationFlightSearch.new( start_airport_code, start_date, end_date )
 
   flight_search.add_destination( "VIE", "Vienna", "Austria" )
   flight_search.add_destination( "BRU", "Brussels", "Belgium" )
