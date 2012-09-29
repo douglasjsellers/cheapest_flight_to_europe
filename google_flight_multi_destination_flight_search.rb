@@ -43,8 +43,9 @@ class MultiDestinationFlightSearch
   private
   def find_flight_cost( airport_code )
     num_days = (Date.parse( @return_date ).mjd - Date.parse(@departure_date).mjd)
+    json_start_location = @origin.split( ',' ).map { |location| '\"' + location + '\"' }.join( ',' )
     
-    json = '[,[[,"ca","[,[,[\"' + @origin + '\"]\n,\"\",[\"' + airport_code +'\"]\n,\"\",,,,,,,,,,,,,1]\n,\"' + @departure_date+ '\",\"' + @departure_date +'\",' + num_days.to_s + ']\n",,18]
+    json = '[,[[,"ca","[,[,[' + json_start_location + ']\n,\"\",[\"' + airport_code +'\"]\n,\"\",,,,,,,,,,,,,1]\n,\"' + @departure_date+ '\",\"' + @departure_date +'\",' + num_days.to_s + ']\n",,18]
 ]
 ]'
 
