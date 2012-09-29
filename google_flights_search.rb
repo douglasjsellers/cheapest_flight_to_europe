@@ -6,14 +6,16 @@ require 'pp'
 
 start_date = "2012-10-01"
 end_date = "2012-10-31"
-start_location = "LAX"
+start_location = "LAX,LGB"
 end_location = "OKC"
 
+json_start_location = start_location.split( ',' ).map { |location| '\"' + location + '\"' }.join( ',' )
 num_days = Date.parse( end_date ).mjd - Date.parse(start_date).mjd
-json = '[,[[,"ca","[,[,[\"' + start_location + '\"]\n,\"\",[\"' + end_location +'\"]\n,\"\",,,,,,,,,,,,,1]\n,\"' + start_date+ '\",\"' + start_date +'\",' + num_days.to_s + ']\n",,18]
+json = '[,[[,"ca","[,[,[' + json_start_location + ']\n,\"\",[\"' + end_location +'\"]\n,\"\",,,,,,,,,,,,,1]\n,\"' + start_date+ '\",\"' + start_date +'\",' + num_days.to_s + ']\n",,18]
 ]
 ]'
-require 'mechanize'
+puts json
+
 headers = {}
 headers['Content-Type'] = 'application/json; charset=utf-8'
 headers['X-GWT-Permutation'] = '0BB89375061712D90759336B50687E78'
