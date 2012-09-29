@@ -58,9 +58,13 @@ class MultiDestinationFlightSearch
       return nil, nil
     else
       price = returned_json.split( ',' )[7].split(']').first.to_i / 100
-      url = "http://www.google.com/flights/#search;f=#{@origin};t=#{airport_code};d=#{@departure_date};r=#{@return_date}"
+      if( price == 0 )
+        return nil,nil
+      else
+        url = "http://www.google.com/flights/#search;f=#{@origin};t=#{airport_code};d=#{@departure_date};r=#{@return_date}"
 
-      return price,url
+        return price,url
+      end
     end
     
     
