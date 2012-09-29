@@ -17,7 +17,11 @@ class MultiDestinationFlightSearch
     flights = []
     @destinations.each do |destination|
       price, url = find_flight_cost( destination.first )
-      flights << [price,url] + destination
+      if( price.nil? )
+        puts "No flight to #{destination.first}"
+      else
+        flights << [price,url] + destination
+      end
     end
 
     flights.sort { |a,b| a.first <=> b.first }
@@ -29,7 +33,7 @@ class MultiDestinationFlightSearch
     puts ""
     puts "Sorted Results"
     puts "--------------"
-    find_cheapest_flights.each do |flight|
+    cheapest_flights.each do |flight|
       price, url, airport_code, city, destination = *flight
       puts "#{price}, #{city}, #{url}"
     end
@@ -49,10 +53,16 @@ class MultiDestinationFlightSearch
     headers['X-GWT-Permutation'] = '0BB89375061712D90759336B50687E78'
     headers['X-GWT-Module-Base']='http://www.google.com/flights/static/'
     headers['Referer']='http://www.google.com/flights/'
-    price = ( (Mechanize.new.post 'http://www.google.com/flights/rpc', json, headers).body ).split( ',' )[7].split(']').first.to_i / 100
-    url = "http://www.google.com/flights/#search;f=#{@origin};t=#{airport_code};d=#{@departure_date};r=#{@return_date}"
+    returned_json = ( (Mechanize.new.post 'http://www.google.com/flights/rpc', json, headers).body )
+    if( returned_json.nil? || returned_json.split( ',' )[7].nil? )
+      return nil, nil
+    else
+      price = returned_json.split( ',' )[7].split(']').first.to_i / 100
+      url = "http://www.google.com/flights/#search;f=#{@origin};t=#{airport_code};d=#{@departure_date};r=#{@return_date}"
 
-    return price,url
+      return price,url
+    end
+    
     
   end
   
