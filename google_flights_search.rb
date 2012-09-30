@@ -7,7 +7,7 @@ require 'pp'
 start_date = "2012-12-18"
 end_date = "2013-01-02"
 start_location = "LAX,LGB,SNA,BUR,ONT"
-end_location = "TXL"
+end_location = "LNA"
 
 json_start_location = start_location.split( ',' ).map { |location| '\"' + location + '\"' }.join( ',' )
 
@@ -15,7 +15,7 @@ json_start_location = start_location.split( ',' ).map { |location| '\"' + locati
 def make_google_api_request( json )
   headers = {}
   headers['Content-Type'] = 'application/json; charset=utf-8'
-  headers['X-GWT-Permutation'] = '0BB89375061712D90759336B50687E78'
+  headers['X-GWT-Permutation'] = '475BAF4AEBA848B4F2A7E0E8803D533E'
   headers['X-GWT-Module-Base']='http://www.google.com/flights/static/'
   headers['Referer']='http://www.google.com/flights/'
 
@@ -91,7 +91,12 @@ end
 
 def load_page( json_start_location, start_date, end_date, start_location, end_location )
   url = "http://www.google.com/flights/#search;f=#{start_location};t=#{end_location};d=#{start_date};r=#{end_date}"
-  `curl #{url}`  
+  cheapest_cost =  `phantomjs load_url.js '#{url}'`
+  if( cheapest_cost.nil? || cheapest_cost.length == 0)
+    nil
+  else
+    cheapest_cost[1..cheapest_cost.length].gsub( ',', '' ).to_i
+  end
 end
 
 def make_ca_call( json_start_location, start_date, end_date, start_location, end_location )
@@ -125,18 +130,17 @@ def make_ss_call( json_start_location, start_date, end_date, start_location, end
 end
 
 # Do Flight Search
-load_page( json_start_location, start_date, end_date, start_location, end_location )
-make_fs_call( json_start_location, start_date, end_date, start_location, end_location )
-make_ld_call( json_start_location, start_date, end_date, start_location, end_location )
-make_tb_call( json_start_location, start_date, end_date, start_location, end_location )
-make_fa_call( json_start_location, start_date, end_date, start_location, end_location )
-make_second_fs_call( json_start_location, start_date, end_date, start_location, end_location )
-make_ss_call( json_start_location, start_date, end_date, start_location, end_location )
+#make_fs_call( json_start_location, start_date, end_date, start_location, end_location )
+#make_ld_call( json_start_location, start_date, end_date, start_location, end_location )
+#make_tb_call( json_start_location, start_date, end_date, start_location, end_location )
+#make_fa_call( json_start_location, start_date, end_date, start_location, end_location )
+#make_second_fs_call( json_start_location, start_date, end_date, start_location, end_location )
+#make_ss_call( json_start_location, start_date, end_date, start_location, end_location )
 
 begin
   make_ca_call( json_start_location, start_date, end_date, start_location, end_location )
 rescue
-  make_ca_call( json_start_location, start_date, end_date, start_location, end_location )
+  puts load_page( json_start_location, start_date, end_date, start_location, end_location )
 end
 
 
