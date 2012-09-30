@@ -1,5 +1,5 @@
 #! /usr/bin/ruby
-require_relative 'google_flight_multi_destination_flight_search'
+require_relative 'phantomjs_multi_destination_flight_search'
 
 
 if( ARGV.length < 3 )
