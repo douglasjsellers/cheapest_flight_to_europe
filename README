@@ -1,26 +1,23 @@
 This is a simple program that is used to find the cheapest flights to europe (and other places) from a given airport code.  It is useful if you are interested in traveling to a certain portion of the world but aren't really concerned about exactly where.
 
-In order to use this, you will need a kayak developer api key which can be obtained very easily here: http://www.kayak.com/labs/api/search/developerkey.html
+In order to use this, you will need to have bundler installed and (eventually) phantomjs.  After doing a git clone you should bundle install.  This should install phantomjs.  After bundle finishes running verify that phantomjs is in your path.  
 
-The usage is as follows:
-ruby cheapest_flight_to_europe.rb <DEVELOPER_KEY> AIRPORT_CODE DEPART_DATE RETURN_DATE NUMBER_OF_PASSENGERS
+Once it is the usage is as follows:
+bundle exec ruby cheapest_flight_to_europe.rb DEPARTURE_AIRPORT_CODE DEPART_DATE RETURN_DATE
 
 For example:
-ruby cheapest_flight_to_europe.rb <YOUR_KEY> LAX 12/18/2010 1/1/2011 1
-
+bundle exec ruby cheapest_flight_to_europe.rb LAX,LGB,SNA,BUR,ONT 2012-12-18 2013-01-02
 
 This will return CSV separated list of values of the format:
 
-Price in USD, City, Country, Airport Code, Url To Purchase Tickts
+Price in USD, City - Country, URL
 
 Here are some example results:
-1321, Vienna, Austria,VIE, http://api.kayak.com/book/flight?code=433837366.P6PqYg.0.F.VAYAMA,VAYAMA.0.e35de7584afe520a443536a4943aaccc&amp;_sid_=24-
-1183, Brussels, Belgium,BRU, http://api.kayak.com/book/flight?code=643683161.PpC9ZU.0.F.ORBITZAIRSYN,ORBITZAIRSYN.0.100068854d1f17d5b7d00de0242e5ff1&amp;_sid_=13-EjDWujr2DehI0Ezta7bL
-1432, Prague, Czech Republic,PRG, http://api.kayak.com/book/flight?code=-1895614860.PjJ4OE.0.F.AIRFAREDOTCOM,AIRFAREDOTCOM.0.05d6fcb75bb84f7a28a04c17cd5e0540&amp;_sid_=11-gZVlIc17a2phm_$OIrjq
-1161, Copenhagen, Denmark,CPH, http://api.kayak.com/book/flight?code=268234906.NWUXj2.0.F.VAYAMA,VAYAMA.0.541febe245dd4c1d061ab8c8ddf4909e&amp;_sid_=18-iRARnQ9tucIooImNkZur
+$1,278 , Osaka - Japan , http://www.google.com/flights/#search;f=LAX,LGB,SNA,BUR,ONT;t=KIX;d=2012-12-18;r=2013-01-02
+$1,429 , Seoul - Korea , http://www.google.com/flights/#search;f=LAX,LGB,SNA,BUR,ONT;t=GMP;d=2012-12-18;r=2013-01-02
+$1,459 , Tokyo - Japan , http://www.google.com/flights/#search;f=LAX,LGB,SNA,BUR,ONT;t=NRT;d=2012-12-18;r=2013-01-02
 
-
-
+There are three scripts currently, one for europe, one for asia and one for australia/newzealand.  Enjoy!
 
 
 
