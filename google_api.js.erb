@@ -2,9 +2,9 @@ var slug  = phantom.args[0];
 
 var airports_to_process = new Array();
 
-airports_to_process.push( ["http://www.google.com/flights/#search;f=LAX,LGB,SNA,BUR,ONT;t=TLS;d=2012-12-04;r=2012-12-19", "TLS", "Toulouse", "France"] );
-airports_to_process.push( ["http://www.google.com/flights/#search;f=LAX,LGB,SNA,BUR,ONT;t=SXB;d=2012-12-04;r=2012-12-19", "SXB","Strasbourg","France"] );
-airports_to_process.push( ["http://www.google.com/flights/#search;f=LAX,LGB,SNA,BUR,ONT;t=VIE;d=2012-12-04;r=2012-12-19", "VIE", "Vienna", "Austria"] );
+<% @destinations.each do |destination| %>
+airports_to_process.push( ["<%= destination[0] %>", "<%= destination[1] %>", "<%= destination[2] %>", "<%= destination[3] %>"] );
+<% end %>
 
 var times = [];
 var startTime = new Date().getTime();
@@ -42,19 +42,26 @@ function processAirport( airport_array )
                        '//*[@id="root"]/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[3]/div[1]/div/div[2]/div[2]/div[1]/div[1]/div/div/div[6]/span[2]',
                      document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null
                    );
-                   
-                     return result.snapshotItem(0).innerText;
-                   } else
+                     if( result.snapshotLength == 0 )
                      {
-                       return 0;
+                         return -1;
+                     } else
+                     {
+                         return result.snapshotItem(0).innerText;
                      }
+                   } else
+                   {
+                     return 0;
+                   }
                  } );
-                if( cheapest_ticket != 0 )
+                if( cheapest_ticket != 0 && cheapest_ticket != -1)
                 {
                     console.log( cheapest_ticket + "," + airport_array[2] + " - " + airport_array[3] +  "," + url );
+                    page.release();
                     loadNext();
-                } else if( count > 20 )
+                } else if( count > 20 || cheapest_ticket == -1 )
                 {
+                    page.release();
                     loadNext();
                 } else
                 {
