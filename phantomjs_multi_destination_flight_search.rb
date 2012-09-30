@@ -12,25 +12,27 @@ class MultiDestinationFlightSearch
     @destinations << [url( airport_code), airport_code, city_name, country_name]
   end
 
-  def print_cheapest_flights
+  def cheapest_flights
     erb = ERB.new( File.read( 'google_api.js.erb' ) )
     javascript_file = erb.result( binding )
     File.open('countries.js', 'w') {|f| f.write(javascript_file) }
-    `phantomjs countries.js`
-  end
-  
-  def price
-    cheapest_cost =  `phantomjs load_url.js '#{@url}'`
-    puts "Using phantom for #{@url} with result #{cheapest_cost}"
-    
-    if( cheapest_cost.nil? || cheapest_cost.length == 0)
-      nil
-    else
-      cheapest_cost[1..cheapest_cost.length].gsub( ',', '' ).to_i
-    end
+    results = `phantomjs countries.js`
+    results.split( "\n" ).sort do |a, b|
+      convert_price_to_integer( a.split( ' , ' ).first ) <=> convert_price_to_integer( b.split( ' , ').first )
+    end.join( "\n" )
   end
 
+  def print_cheapest_flights
+    puts cheapest_flights
+  end
+  
+  
+
   private
+  
+  def convert_price_to_integer( cheapest_cost )
+    cheapest_cost[1..cheapest_cost.length].gsub( ',', '' ).to_i
+  end
 
   def url( airport_code )
     "http://www.google.com/flights/#search;f=#{@start_airport_code};t=#{airport_code};d=#{@start_date};r=#{@end_date}"

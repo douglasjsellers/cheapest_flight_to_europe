@@ -56,7 +56,7 @@ function processAirport( airport_array )
                  } );
                 if( cheapest_ticket != 0 && cheapest_ticket != -1)
                 {
-                    console.log( cheapest_ticket + "," + airport_array[2] + " - " + airport_array[3] +  "," + url );
+                    console.log( cheapest_ticket + " , " + airport_array[2] + " - " + airport_array[3] +  " , " + url );
                     page.release();
                     loadNext();
                 } else if( count > 20 || cheapest_ticket == -1 )
