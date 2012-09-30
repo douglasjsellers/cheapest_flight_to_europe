@@ -1,6 +1,7 @@
 require 'mechanize'
 require 'json'
 
+
 class MultiDestinationFlightSearch
   def initialize( origin, departure_date, return_date )
     @origin = origin
@@ -55,20 +56,16 @@ class MultiDestinationFlightSearch
     headers['X-GWT-Module-Base']='http://www.google.com/flights/static/'
     headers['Referer']='http://www.google.com/flights/'
     returned_json = ( (Mechanize.new.post 'http://www.google.com/flights/rpc', json, headers).body )
+    url = "http://www.google.com/flights/#search;f=#{@origin};t=#{airport_code};d=#{@departure_date};r=#{@return_date}"
     if( returned_json.nil? || returned_json.split( ',' )[7].nil? )
-      return nil, nil
+      price = nil
     else
       price = returned_json.split( ',' )[7].split(']').first.to_i / 100
       if( price == 0 )
-        return nil,nil
-      else
-        url = "http://www.google.com/flights/#search;f=#{@origin};t=#{airport_code};d=#{@departure_date};r=#{@return_date}"
-
-        return price,url
+        price = nil
       end
     end
-    
-    
+    return price, url
   end
   
   

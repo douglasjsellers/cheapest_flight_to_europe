@@ -3,6 +3,7 @@ var page = require('webpage').create();
 page.open(url, function (status) {});
 page.onLoadFinished = function (status)
 {
+  page.render( 'output.png' );
   var cheapest_ticket = page.evaluate( function() {
                    
 
@@ -16,7 +17,4 @@ page.onLoadFinished = function (status)
   phantom.exit();
 };
 
-page.onLoadFinished = function (status)
-{
-  phantom.exit();
-}
+

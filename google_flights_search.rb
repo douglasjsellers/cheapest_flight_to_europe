@@ -7,7 +7,7 @@ require 'pp'
 start_date = "2012-12-18"
 end_date = "2013-01-02"
 start_location = "LAX,LGB,SNA,BUR,ONT"
-end_location = "LNA"
+end_location = "VIE"
 
 json_start_location = start_location.split( ',' ).map { |location| '\"' + location + '\"' }.join( ',' )
 
