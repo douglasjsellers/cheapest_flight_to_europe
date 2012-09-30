@@ -12,16 +12,37 @@ else
 
   flight_search = MultiDestinationFlightSearch.new( start_airport_code, start_date, end_date )
 
+  flight_search.add_destination( "SYD","Sydney","Australia" )
+  flight_search.add_destination( "MEL","Melbourne","Australia" )
+  flight_search.add_destination( "BNE","Brisbane","Australia" )
+  flight_search.add_destination( "PER","Perth","Australia" )
+  flight_search.add_destination( "ADL","Adelaide","Australia" )
+  flight_search.add_destination( "OOL","Gold Coast","Australia")
+  flight_search.add_destination( "CNS","Cairns","Australia" )
+  flight_search.add_destination( "CBR","Canberra","Australia")
+  flight_search.add_destination( "HBA","Hobart","Australia")
+  flight_search.add_destination( "DRW","Darwin","Australia" )
+  flight_search.add_destination( "TSV","Townsville","Australia" )
+  flight_search.add_destination( "LST","Tasmania","Australia" )
+  flight_search.add_destination( "NTL","Newcastle","Australia" )
+  
+
+  
   flight_search.add_destination( "AKL","Auckland","New Zealand")
   flight_search.add_destination( "CHC","Christchurh","New Zealand")
   flight_search.add_destination( "WLG","Wellington","New Zealand")
-  flight_search.add_destination( "ADL","Adelaide","Australia" )
-  flight_search.add_destination( "BNE","Brisbane","Australia" )
-  flight_search.add_destination( "CNS","Cairns","Australia" )
-  flight_search.add_destination( "DRW","Darwin","Australia" )
-  flight_search.add_destination( "MEL","Melbourne","Australia" )
-  flight_search.add_destination( "PER","Perth","Australia" )
-  flight_search.add_destination( "SYD","Sydney","Australia" )
+  flight_search.add_destination( "ZQN","Queenstown","New Zealand")
+  flight_search.add_destination( "DUD","Dudedin","New Zealand")
+  flight_search.add_destination( "GUM","Guam","Guam")
+  flight_search.add_destination( "NAN","Fiji","Fiji")
+  flight_search.add_destination( "PPT","Tahiti","Tahiti")
+
+
+
+
+
+
+
   
   flight_search.print_cheapest_flights   
   
