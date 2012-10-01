@@ -35,7 +35,9 @@ else
   flight_search.add_destination( "DUD","Dudedin","New Zealand")
   flight_search.add_destination( "GUM","Guam","Guam")
   flight_search.add_destination( "NAN","Fiji","Fiji")
-  flight_search.add_destination( "PPT","Tahiti","Tahiti")
+  flight_search.add_destination( "PPT","Papeete","Tahiti")
+  flight_search.add_destination( "BOB","Bora Bora","Tahiti")
+  flight_search.add_destination( "MOZ","Moorea","Tahiti")
 
 
 
